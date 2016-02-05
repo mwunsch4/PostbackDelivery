@@ -103,14 +103,40 @@ export GOBIN=$GOPATH/bin
 
 # Usage
 
-## Data Flow
+### Data Flow
 1. Web request >
 2. [Ingestion Agent (php)](#ingestionagent) >
 3. [Delivery Queue (redis)](#deliveryqueue) >
 4. [Delivery Agent (GO)](#deliveryagent) >
 5. Web response
 
-## Components
+### Sample Request
+~~~
+(POST) http://{server_ip}/ingest.php
+	(RAW POST DATA) {  
+	  "endpoint":{  
+	    "method":"GET",
+	    "url":"http://sample_domain_endpoint.com/data?key={key}&value={value}&foo={bar}"
+	  },
+	  "data":[  
+	    {  
+	      "key":"Azureus",
+	      "value":"Dendrobates"
+	    },
+	    {  
+	      "key":"Phyllobates",
+	      "value":"Terribilis"
+	    }
+	  ]
+	}
+~~~
+### Sample Response
+~~~
+http://sample_domain_endpoint.com/data?key=Phyllobates&value=Terribilis&foo=
+~~~
+### Test Case
+
+# Components
 
 ### Ingestion Agent
 The Ingestion Agent consists of the following components:
