@@ -113,33 +113,33 @@ export GOBIN=$GOPATH/bin
 ## Components
 
 ### Ingestion Agent
-   * The Ingestion Agent consists of the following components:
-#### ingest.php
-   * This file accepts the incoming web request and intializes a new endpointRequest with the contents of the request.
-#### endpointRequest.php
-   * This class is the main worker for the ingestion agent. It creates a new dataRequest for each individual data item and handles the interaction with Redis.
-#### dataRequest.php
-   * This helper class keeps track of each individual data point from the original web request. One postback will be created for each dataRequest.
+The Ingestion Agent consists of the following components:
+- ingest.php
+   - This file accepts the incoming web request and intializes a new endpointRequest with the contents of the request.
+- endpointRequest.php
+   - This class is the main worker for the ingestion agent. It creates a new dataRequest for each individual data item and handles the interaction with Redis.
+- dataRequest.php
+   - This helper class keeps track of each individual data point from the original web request. One postback will be created for each dataRequest.
 
 ### Delivery Queue
 The delivery queue is created and maintained in an instance of Redis. It contains the following data structures:
-#### Pending (List of UUIDs) 
-   * Maintains a list of all UUIDs, each of which corresponds with a unique postback request.
-   * Utilized as a First-In, First-Out (FIFO) list though the use of "LPUSH" for adding and "RPOP" for retrieving. 
-#### Values (Hash)
-   * UUID from Pending list can be hashed to retrieve that URL of the postback request.
-   * "UUID:method" can be hashed to retrieve the method of the postback request.
-#### Stats (Hash)
-   * All time values stored in Stats are in milliseconds in Unix time.
-   * "UUID:start" can be hashed to retrieve the time the postback request was received.
-   * "UUID:post" can be hashed to retrieve the time the postback request was added to Pending list in Redis.
-#### Working (Sorted Set)
-   * When the delivery agent begins processing a postback request, that UUID is added to this set with the time it began processing.
-   * If a postback request is succesfully handled by the delivery agent, its UUID will be removed from Working
-   * If the delivery agent fails during the processing of a request, its UUID will remain on this list to be retrieved and reprocessed.
-#### Delayed (Sorted Set) NOT YET IMPLEMENTED
-   * This sorted set can be used to handle postback requests that are to be delivered after some configurable delay. 
-   * Moving a UUID from this set to Pending would begin the processing of that request.
+- Pending (List of UUIDs) 
+   - Maintains a list of all UUIDs, each of which corresponds with a unique postback request.
+   - Utilized as a First-In, First-Out (FIFO) list though the use of "LPUSH" for adding and "RPOP" for retrieving. 
+- Values (Hash)
+   - UUID from Pending list can be hashed to retrieve that URL of the postback request.
+   - "UUID:method" can be hashed to retrieve the method of the postback request.
+- Stats (Hash)
+   - All time values stored in Stats are in milliseconds in Unix time.
+   - "UUID:start" can be hashed to retrieve the time the postback request was received.
+   - "UUID:post" can be hashed to retrieve the time the postback request was added to Pending list in Redis.
+- Working (Sorted Set)
+   - When the delivery agent begins processing a postback request, that UUID is added to this set with the time it began processing.
+   - If a postback request is succesfully handled by the delivery agent, its UUID will be removed from Working
+   - If the delivery agent fails during the processing of a request, its UUID will remain on this list to be retrieved and reprocessed.
+- Delayed (Sorted Set) NOT YET IMPLEMENTED
+   - This sorted set can be used to handle postback requests that are to be delivered after some configurable delay. 
+   - Moving a UUID from this set to Pending would begin the processing of that request.
 
 ### Delivery Agent
 
