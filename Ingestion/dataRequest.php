@@ -1,5 +1,8 @@
 <?PHP
 
+//This value will be substituted for any unmatched url {key}s
+define('DEFAULT_VALUE', "");
+
 //This class will be the base for all postback requests
 //One instance of this class will be created for each
 //Key-Value pair in the original post data
@@ -34,7 +37,7 @@ class dataRequest
     public function setFormattedURL($url_template)
     {
         $url            = str_replace($this->sub_keys, $this->sub_values, $url_template);
-        $this->finalURL = preg_replace('/{(.*?)}/', '', $url);
+        $this->finalURL = preg_replace('/{(.*?)}/', DEFAULT_VALUE, $url);
     }
     
 }
