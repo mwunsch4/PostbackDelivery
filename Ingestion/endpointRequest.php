@@ -1,7 +1,7 @@
 <?PHP
 include 'dataRequest.php';
 
-define('REDIS_ADDRESS', "127.0.0.1:6309");
+define('REDIS_ADDRESS', "127.0.0.1:6379");
 define('PENDING_QUEUE', "Pending");
 define('VALUES_HASH', "Values");
 define('STATS_HASH', "Stats");
