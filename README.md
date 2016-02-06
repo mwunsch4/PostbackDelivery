@@ -48,7 +48,7 @@ apt-get install apache2
 ~~~
 PHP
 ~~~
-apt-get install pgp5 libapache2-mod-php5
+apt-get install php5 libapache2-mod-php5
 ~~~
 Redis
 ~~~
@@ -158,7 +158,6 @@ The delivery queue is created and maintained in an instance of Redis. It contain
 - Stats (Hash)
    - All time values stored in Stats are in milliseconds in Unix time.
    - "UUID:start" can be hashed to retrieve the time the postback request was received.
-   - "UUID:post" can be hashed to retrieve the time the postback request was added to Pending list in Redis.
 - Working (Sorted Set)
    - When the delivery agent begins processing a postback request, that UUID is added to this set with the time it began processing.
    - If a postback request is succesfully handled by the delivery agent, its UUID will be removed from Working
