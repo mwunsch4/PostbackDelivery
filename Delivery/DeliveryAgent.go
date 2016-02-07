@@ -13,8 +13,8 @@ import (
 
 const (
 	ADDRESS = "127.0.0.1:6379"
-	ERROR_LOG = "error.txt"
-	INFO_LOG = "postback_log.txt"
+	ERROR_LOG = "/var/log/DeliveryAgent/error.txt"
+	INFO_LOG = "/var/log/DeliveryAgent/postback_log.txt"
 	PENDING_QUEUE = "Pending"
 	WORKING_SET = "Working"
 	STATS_HASH = "Stats"
