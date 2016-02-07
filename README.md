@@ -86,6 +86,7 @@ go get github.com/garyburd/redigo/redis
 ### Apache
 Add 'ingest.php' to /etc/apache2/mods-enabled/dir.conf
 Run "a2enmod rewrite" command to enable mod_rewrite
+
 Add the following to .htaccess file in site's directory root:
 ~~~
 <IfModule mod_rewrite.c>
@@ -97,7 +98,8 @@ RewriteRule . /ingest.php [L]
 <IfModule>
 ~~~
 In /etc/apache2/apache2.conf, set "AllowOverride" to "all"
-update-rc.d apache2 defaults (this will make apache2 start on boot)
+
+Update-rc.d apache2 defaults (this will make apache2 start on boot)
 
 ### phpredis
 Add "extension=redis.so" to php.ini file
@@ -109,6 +111,7 @@ export GOPATH=/root/go
 export GOBIN=$GOPATH/bin
 ~~~
 These variables can/should be added to ~/.bashrc
+
 Add "/go/root/bin/DeliveryAgent &" to /etc/rc.local (Note: there is almost certainly a better way to run DeliveryAgent as a daemon, but this will for now)
 # Usage
 
@@ -118,7 +121,7 @@ Add "/go/root/bin/DeliveryAgent &" to /etc/rc.local (Note: there is almost certa
 3. [Delivery Queue (redis)](#deliveryqueue) >
 4. [Delivery Agent (GO)](#deliveryagent) >
 5. Web response
-6. Response information logged in /var/log/DeliveryAgent/postback_log.txt /var/log/DeliveryAgent/error.txt (Note: log names are congfigurable in DeliveryAgent.go)
+6. Response logged in **/var/log/DeliveryAgent/postback_log.txt** and/or **/var/log/DeliveryAgent/error.txt** (Note: log names are congfigurable in DeliveryAgent.go)
 
 ### Sample Request
 ~~~
