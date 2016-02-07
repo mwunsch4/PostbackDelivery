@@ -42,20 +42,29 @@ Everything you should need to get this web app installed and functional on a new
 
 The following commands were used to install the necessary software on an already existing instance of Ubuntu:
 
+GCC
+~~~
+apt-get install gcc
+~~~
 Apache2
 ~~~
 apt-get install apache2
 ~~~
 PHP
 ~~~
-apt-get install php5 libapache2-mod-php5
+apt-get install php5 php5-dev libapache2-mod-php5
 ~~~
 Redis
 ~~~
 wget http://download.redis.io/redis-stable.tar.gz
 tar xvzf redis-stable.tar.gz
 cd redis-stable
+cd deps
+make hiredis jemalloc linenoise lua
+cd ..
 make && make install
+cd utils
+./install_server.sh (this will cause redis-server to start on boot)
 ~~~
 phpredis (after downloading source from github)
 ~~~
@@ -88,19 +97,19 @@ RewriteRule . /ingest.php [L]
 <IfModule>
 ~~~
 In /etc/apache2/apache2.conf, set "AllowOverride" to "all"
+update-rc.d apache2 defaults (this will make apache2 start on boot)
 
 ### phpredis
-Add "extension=redis.io" to php.ini file
+Add "extension=redis.so" to php.ini file
 
 ### GO
-The following assumes that GO was installed to /usr/lib/go and that work will be done in $HOME/work.
 Run the following commands:
 ~~~
-export GOROOT=/usr/lib/go
-export GOPATH=$HOME/work
+export GOPATH=/root/go
 export GOBIN=$GOPATH/bin
 ~~~
-
+These variables can/should be added to ~/.bashrc
+Add "/go/root/bin/DeliveryAgent &" to /etc/rc.local (Note: there is almost certainly a better way to run DeliveryAgent as a daemon, but this will for now)
 # Usage
 
 ### Data Flow
@@ -109,6 +118,7 @@ export GOBIN=$GOPATH/bin
 3. [Delivery Queue (redis)](#deliveryqueue) >
 4. [Delivery Agent (GO)](#deliveryagent) >
 5. Web response
+6. Response information logged in /var/log/DeliveryAgent/postback_log.txt /var/log/DeliveryAgent/error.txt (Note: log names are congfigurable in DeliveryAgent.go)
 
 ### Sample Request
 ~~~
