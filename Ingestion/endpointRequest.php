@@ -70,8 +70,6 @@ class endpointRequest
         if ($this->ready) {
             foreach ($this->data_requests as $uuid => $request) {
                 $request->setFormattedURL($this->endpoint->url);
-                $data_requests[] = $request;
-                $this->test = $request->getFormattedURL();
             }
             
             if (!empty($this->data_requests)) {
@@ -84,7 +82,11 @@ class endpointRequest
     //Each data request will be pushed to corresponding data structs in Redis
     public function enqueueRequests()
     {
-        $finished = "Error connecting to redis";
+        if (!$this->has_requests) {
+		return "No requests to send";
+	}
+	
+	$finished = "Error connecting to redis";
         
         try {
             $redis = new Redis();
