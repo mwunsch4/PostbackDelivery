@@ -149,6 +149,7 @@ Add "/go/root/bin/DeliveryAgent &" to /etc/rc.local (Note: there is almost certa
 http://sample_domain_endpoint.com/data?key=Phyllobates&value=Terribilis&foo=
 ~~~
 ### Test Case
+- 162.243.19.49/index.html can be used to execute a very simple test of the Postback Delivery.
 
 # Components
 
