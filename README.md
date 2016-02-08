@@ -117,11 +117,11 @@ Add "/go/root/bin/DeliveryAgent &" to /etc/rc.local (Note: there is almost certa
 # Usage
 
 ### Data Flow
-1. Web request >
+1. Web request to 162.243.19.49/ingest.php or 162.243.19.49/i >
 2. [Ingestion Agent (php)](#ingestionagent) >
 3. [Delivery Queue (redis)](#deliveryqueue) >
 4. [Delivery Agent (GO)](#deliveryagent) >
-5. Web response
+5. Web response >
 6. Response logged in **/var/log/DeliveryAgent/postback_log.txt** and/or **/var/log/DeliveryAgent/error.txt** (Note: log names are congfigurable in DeliveryAgent.go)
 
 ### Sample Request
@@ -195,6 +195,7 @@ The Delivery Agent is handled by DeliveryAgent.go (found at /root/go/src/Deliver
 
 ### Planned Features
 - More comprehensive testing suite (currently just using hard-coded values in ingest_test.js)
+- Accept JSON encoded web requests (application/x-www-form-urlencoded currently used for simplicity and speed)
 - GO application to handle orphaned requests in **Working** Redis data structure.
 - Updating Delivery Agent and Ingestion Agent to handle "POST" requests as well
 - Add configurable delay to postback requests
