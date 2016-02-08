@@ -85,6 +85,7 @@ go get github.com/garyburd/redigo/redis
 
 ### Apache
 Add 'ingest.php' to /etc/apache2/mods-enabled/dir.conf
+
 Run "a2enmod rewrite" command to enable mod_rewrite
 
 Add the following to .htaccess file in site's directory root:
@@ -94,8 +95,8 @@ RewriteEngine On
 RewriteBase /
 RewriteCond ${REQUEST_FILENAME} !-f
 RewriteCond ${REQUEST_FILENAME} !-d
-RewriteRule . /ingest.php [L]
-<IfModule>
+RewriteRule ^(.*)$ /ingest.php [L]
+</IfModule>
 ~~~
 In /etc/apache2/apache2.conf, set "AllowOverride" to "all"
 
@@ -180,4 +181,26 @@ The delivery queue is created and maintained in an instance of Redis. It contain
    - Moving a UUID from this set to Pending would begin the processing of that request.
 
 ### Delivery Agent
+The Delivery Agent is handled by DeliveryAgent.go (found at /root/go/src/DeliveryAgent/DeliveryAgent.go)
+- Infinite loop that constantly attempts to RPOP from a Redis list called **Pending**.
+- When a new postback request is found in the Redis data sets, DeliveryAgent.go executes an HTTP "GET" and logs the results.
+- Constants at the top of the file can be used to define the Redis connection, Redis data sets, and log file locations.
+- Request Time, Delivery Time, and Response Time are all logged in UTC Unix time (milliseconds)
+   - Request Time comes from the Ingestion Agent and represents the time the response was received by ingest.php
+   - Delivery Time comes from the Delivery Agent and represents the time that DeliveryAgent.go begins handling a postback request.
+   - Response Time comes from the Delivery Agent and represents the time that the HTTP "GET" response was received.
+
+# Future Work
+
+### Planned Features
+- More comprehensive testing suite (currently just using hard-coded values in ingest_test.js)
+- GO application to handle orphaned requests in **Working** Redis data structure.
+- Updating Delivery Agent and Ingestion Agent to handle "POST" requests as well
+- Add configurable delay to postback requests
+- Add configurable number of retry attempts on failed requests
+- Run DeliveryAgent as a daemon
+
+### Wish List
+- Visualization of postbacks in real-time
+- Application monitoring/profiling
 
